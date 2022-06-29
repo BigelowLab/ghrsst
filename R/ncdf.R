@@ -4,10 +4,24 @@
 #' @param X ncdf4 object
 #' @return 2 element [lon, lat] resolution vector
 mur_res <- function(X){
-  g <- ncdf4::ncatt_get(X, 0)
   
-  lon <- strsplit(g$geospatial_lon_resolution, " ")[[1]][1]
-  lat <- strsplit(g$geospatial_lat_resolution, " ")[[1]][1]
+  g <- ncdf4::ncatt_get(X, 0)
+  nm <- names(g)
+  
+  ix <- grep("geospatial_lon_res", nm, fixed = TRUE)
+  if (length(ix) > 0){
+    lon <- sub(" degrees", "", g[[ix]][1], fixed = TRUE)
+  } else {
+    lon <- 0.1
+  }
+
+  ix <- grep("geospatial_lat_res", nm, fixed = TRUE)
+  if (length(ix) > 0){
+    lat <- sub(" degrees", "", g[[ix]][1], fixed = TRUE)
+  } else {
+    lat <- 0.1
+  }
+  
   as.numeric(c(lon, lat))
 }
 
@@ -41,6 +55,20 @@ mur_time <- function(X,
          time)
 }
 
+#' Retrieve MUR variables
+#' 
+#' @export
+#' @param X ncdf4 object
+#' @return character vector
+mur_vars <- function(X){
+  if (inherits(X, "ncdf4")){
+    x <- names(X$var)
+  } else {
+    x <- c("analysed_sst", "analysis_error", "mask", "sea_ice_fraction", 
+      "dt_1km_data", "sst_anomaly")
+  }
+  x
+}
 
 #' Retrieve MUR navigation values (start, count, lons, lats)
 #'
@@ -65,7 +93,7 @@ mur_time <- function(X,
 mur_nc_nav_point <- function(X, g,
                           res = mur_res(X),
                           time = c(1, -1),
-                          varname = c("analysed_sst", "mask")){
+                          varname = mur_vars(X)){
   
   stopifnot(inherits(X, 'ncdf4'))
   if (!(varname[1] %in% names(X$var))) stop("varname not known:", varname[1])
@@ -125,7 +153,7 @@ mur_nc_nav_point <- function(X, g,
 mur_nc_nav_bb <- function(X, g,
                        res = mur_res(X),
                        time = c(1, -1),
-                       varname = "analysed_sst"){
+                       varname =  mur_vars(X)){
   
   stopifnot(inherits(X, 'ncdf4'))
   if (!(varname[1] %in% names(X$var))) stop("varname not known:", varname[1])

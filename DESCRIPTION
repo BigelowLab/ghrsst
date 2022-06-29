@@ -10,6 +10,7 @@ Imports:
   dplyr,
   tidyr,
   sf,
+  stars,
   ncdf4
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Kyle Shehata Oliveira <kyle.oliveira@maine.edu>, Camille Ross <cross@bigelow.org>, Johnathan Evanilla <jevanilla@bigelow.org>

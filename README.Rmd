@@ -1,0 +1,55 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(sf)
+  library(ghrsst)
+  library(xyzt)
+})
+```
+
+Working with points
+```{r}
+# read in example GOM points
+x <- xyzt::read_gom() |>
+  dplyr::select(-time, -depth) |>
+  xyzt::as_POINT()
+
+# generate a MUR url for a given date
+url <- mur_url("2018-12-18")
+
+# open the resource
+X <- ncdf4::nc_open(url)
+
+# extract the data 
+covars <- ghrsst::extract(x, X, varname = mur_vars(X))
+
+# bind to the input
+(y <- dplyr::bind_cols(x, covars))
+```
+
+Working with bounding boxes (from points or polygons)
+
+```{r}
+# read in example GOM points
+x <- xyzt::read_gom() |>
+  dplyr::select(-time, -depth) |>
+  xyzt::as_BBOX()
+
+(covars <- ghrsst::extract(x, X, varnames = ghrsst::mur_vars(X)))
+
+```
+
+
+```{r}
+# cleanup
+ncdf4::nc_close(X)
+```

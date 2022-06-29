@@ -4,13 +4,7 @@
 \alias{mur_nc_nav_bb}
 \title{Retrieve MUR navigation values (start, count, lons, lats)}
 \usage{
-mur_nc_nav_bb(
-  X,
-  g,
-  res = mur_res(X),
-  time = c(1, -1),
-  varname = "analysed_sst"
-)
+mur_nc_nav_bb(X, g, res = mur_res(X), time = c(1, -1), varname = mur_vars(X))
 }
 \arguments{
 \item{X}{ncdf4 object}

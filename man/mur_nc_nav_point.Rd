@@ -9,7 +9,7 @@ mur_nc_nav_point(
   g,
   res = mur_res(X),
   time = c(1, -1),
-  varname = c("analysed_sst", "mask")
+  varname = mur_vars(X)
 )
 }
 \arguments{

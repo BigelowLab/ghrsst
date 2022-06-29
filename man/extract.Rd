@@ -2,20 +2,49 @@
 % Please edit documentation in R/extract.R
 \name{extract}
 \alias{extract}
+\alias{extract.default}
+\alias{extract.sf}
+\alias{extract.sfc_POINT}
+\alias{extract.sfc_POLYGON}
 \title{extract generic}
 \usage{
-extract(x, y, ...)
+extract(x, ...)
+
+\method{extract}{default}(x, y = NULL, ...)
+
+\method{extract}{sf}(x, y = NULL, varname = mur_vars(X), ...)
+
+\method{extract}{sfc_POINT}(x, y = NULL, varname = mur_vars(y), ...)
+
+\method{extract}{sfc_POLYGON}(x, y = NULL, varname = mur_vars(y)[1], ...)
 }
 \arguments{
-\item{x}{\code{sf} object}
+\item{x}{\code{sfc} object that defines a bounding box}
+
+\item{...}{Arguments passed to or from other methods}
 
 \item{y}{\code{ncdf4} object}
 
-\item{...}{Arguments passed to or from other methods}
+\item{varname}{character one or more variable names}
 }
 \value{
 data frame of covariates (point, or raster)
+
+tibble of extracted values (one variable per covariate)
+
+stars object (one variable per covariate)
 }
 \description{
 extract generic
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: Extract data from a NCDF4 object
+
+\item \code{sf}: Extract from a NCDF4 object using any sf object
+
+\item \code{sfc_POINT}: Extract data from a NCDF4 object using sf POINT object
+
+\item \code{sfc_POLYGON}: Extract data from a NCDF4 object using sf POLYGON object
+}}
+
