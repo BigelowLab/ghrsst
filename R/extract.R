@@ -44,7 +44,7 @@ extract.default <- function(x, y = NULL, ...){
 #' @param y \code{ncdf4} object
 #' @param varname character, one or more variable names
 #' @describeIn extract Extract from a NCDF4 object using any sf object
-extract.sf <- function(x, y = NULL, varname = mur_vars(X),...){
+extract.sf <- function(x, y = NULL, varname = mur_vars(y),...){
   
   typ <- get_geometry_type(x)
   switch(typ,
