@@ -1,5 +1,31 @@
-Untitled
+ghrsst
 ================
+
+Access OPeNDAP GHRSST data from R. Extract point or bounded boxes (as
+raster).
+
+## Requirements
+
+-   [R v4.1+](https://www.r-project.org/)
+
+Packages from CRAN.
+
+-   [rlang](https://CRAN.R-project.org/package=rlang)
+-   [dplyr](https://CRAN.R-project.org/package=httr)
+-   [sf](https://CRAN.R-project.org/package=sf)
+-   [stars](https://CRAN.R-project.org/package=stars)
+-   [tidyr](https://CRAN.R-project.org/package=tidyr)
+-   [ncdf4](https://CRAN.R-project.org/package=ncdf4)
+
+Packages from Github
+
+-   [xyzt](https://github.com/BigelowLab/xyzt)
+
+## Installation
+
+    remotes::install_github("BigelowLab/ghrsst")
+
+### Usage
 
 ``` r
 suppressPackageStartupMessages({
@@ -10,7 +36,10 @@ suppressPackageStartupMessages({
 })
 ```
 
-Working with points
+#### Working with points.
+
+See the [xyzt](https://github.com/BigelowLab/xyzt) package for more
+details on the example Gulf of Maine data.
 
 ``` r
 # read in example GOM points
@@ -46,7 +75,11 @@ covars <- ghrsst::extract(x, X, varname = mur_vars(X))
     ## 5 44008 Nantu…  (-69.24 40.5)         283.           0.38          18
     ## # … with 2 more variables: mask <int>, sea_ice_fraction <dbl>
 
-Working with bounding boxes (from points or polygons)
+#### Working with bounding boxes (from points or polygons).
+
+Learn more about working with
+[stars](https://CRAN.R-project.org/package=stars) objects in the
+[vignettes](https://r-spatial.github.io/stars/).
 
 ``` r
 # read in example GOM points

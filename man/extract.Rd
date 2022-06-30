@@ -12,9 +12,9 @@ extract(x, ...)
 
 \method{extract}{default}(x, y = NULL, ...)
 
-\method{extract}{sf}(x, y = NULL, varname = mur_vars(X), ...)
+\method{extract}{sf}(x, y = NULL, varname = mur_vars(y), verbose = FALSE, ...)
 
-\method{extract}{sfc_POINT}(x, y = NULL, varname = mur_vars(y), ...)
+\method{extract}{sfc_POINT}(x, y = NULL, varname = mur_vars(y), verbose = FALSE, ...)
 
 \method{extract}{sfc_POLYGON}(x, y = NULL, varname = mur_vars(y)[1], ...)
 }
@@ -26,6 +26,8 @@ extract(x, ...)
 \item{y}{\code{ncdf4} object}
 
 \item{varname}{character one or more variable names}
+
+\item{verbose}{logical, output helpful messages?}
 }
 \value{
 data frame of covariates (point, or raster)
