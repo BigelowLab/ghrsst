@@ -80,6 +80,18 @@ x <- xyzt::read_gom() |>
 (covars <- ghrsst::extract(x, X, varnames = ghrsst::mur_vars(X)))
 ```
 
+Now let's see what it looks like.
+
+```{r}
+x <- xyzt::read_gom() |>
+  dplyr::select(-time, -depth) |>
+  xyzt::as_POINT()
+par(mfrow = c(1,2))
+plot(covars, attr = 'analysed_sst', axes = TRUE, reset = FALSE)
+plot(sf::st_geometry(x), add = TRUE, col = "orange", pch = 19, cex = 2)
+```
+
+
 
 ```{r}
 # cleanup

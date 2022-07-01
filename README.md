@@ -33,6 +33,7 @@ suppressPackageStartupMessages({
   library(sf)
   library(ghrsst)
   library(xyzt)
+  library(stars)
 })
 ```
 
@@ -102,6 +103,19 @@ x <- xyzt::read_gom() |>
     ##   from  to offset       delta refsys point values x/y
     ## x    1 360 -70.17  0.00994444 WGS 84    NA   NULL [x]
     ## y    1 303   43.5 -0.00990099 WGS 84    NA   NULL [y]
+
+Now let’s see what it looks like.
+
+``` r
+x <- xyzt::read_gom() |>
+  dplyr::select(-time, -depth) |>
+  xyzt::as_POINT()
+par(mfrow = c(1,2))
+plot(covars, attr = 'analysed_sst', axes = TRUE, reset = FALSE)
+plot(sf::st_geometry(x), add = TRUE, col = "orange", pch = 19, cex = 2)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 # cleanup
