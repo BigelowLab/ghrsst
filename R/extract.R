@@ -64,7 +64,7 @@ extract.sf <- function(x, y = NULL,
            ss <- lapply(varname,
                 function(varnm,g = NULL, y = NULL, ...) {
                   extract(g, y = y, varname = varnm, verbose = verbose, ...)
-                }, g = g, y = y, ...)
+                }, g = g, y = y)
            r <- Reduce(c, ss)
           }
          )
@@ -128,8 +128,7 @@ extract.sfc_POINT <- function(x, y = NULL,
 #' @describeIn extract Extract data from a NCDF4 object using sf POLYGON object
 extract.sfc_POLYGON <- function(x, y = NULL, varname = mur_vars(y)[1], ...){
   
-    bb <- xyzt::as_BBOX(x)
-    nav <- mur_nc_nav_bb(y, bb, varname = varname)
+    nav <- mur_nc_nav_bb(y, x, varname = varname)
     m <- ncdf4::ncvar_get(y, varid = varname,
                      start = nav$start, count = nav$count)
     stars::st_as_stars(sf::st_bbox(x), 
