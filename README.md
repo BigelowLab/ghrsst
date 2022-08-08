@@ -67,14 +67,15 @@ covars <- ghrsst::extract(x, X, varname = mur_vars(X))
     ## Bounding box:  xmin: -70.17 ymin: 40.5 xmax: -66.59 ymax: 43.5
     ## Geodetic CRS:  WGS 84
     ## # A tibble: 5 × 8
-    ##   id    name         geometry analysed_sst analysis_error dt_1km_data
-    ## * <chr> <chr>     <POINT [°]>        <dbl>          <dbl>       <int>
-    ## 1 44098 Jeffr… (-70.17 42.81)         281.           0.37          NA
-    ## 2 44005 Cashe… (-69.22 43.17)         281.           0.37         -55
-    ## 3 44037 Jorda…  (-67.87 43.5)         281.           0.39          45
-    ## 4 44011 Georg… (-66.59 41.09)         282.           0.39          NA
-    ## 5 44008 Nantu…  (-69.24 40.5)         283.           0.38          18
-    ## # … with 2 more variables: mask <int>, sea_ice_fraction <dbl>
+    ##   id    name           geometry analysed_sst analysis_er…¹ dt_1k…²  mask sea_i…³
+    ## * <chr> <chr>       <POINT [°]>        <dbl>         <dbl>   <int> <int>   <dbl>
+    ## 1 44098 Jeffrey… (-70.17 42.81)         281.          0.37      NA     1      NA
+    ## 2 44005 Cashes … (-69.22 43.17)         281.          0.37     -55     1      NA
+    ## 3 44037 Jordan …  (-67.87 43.5)         281.          0.39      45     1      NA
+    ## 4 44011 Georges… (-66.59 41.09)         282.          0.39      NA     1      NA
+    ## 5 44008 Nantuck…  (-69.24 40.5)         283.          0.38      18     1      NA
+    ## # … with abbreviated variable names ¹​analysis_error, ²​dt_1km_data,
+    ## #   ³​sea_ice_fraction
 
 #### Working with bounding boxes (from points or polygons).
 
