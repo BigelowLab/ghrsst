@@ -2,8 +2,16 @@
 % Please edit documentation in R/ghrsst-package.R
 \docType{package}
 \name{ghrsst}
+\alias{ghrsst-package}
 \alias{ghrsst}
-\title{ghrsst: Simplified access to GHRSST (JPL's MUR daily SST) data from R.}
+\title{ghrsst: ghrsst}
 \description{
 Simplified access to GHRSST (JPL's MUR daily SST) data from R.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/BigelowLab/ghrsst}
+}
+
 }

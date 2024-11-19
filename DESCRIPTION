@@ -2,19 +2,17 @@ Package: ghrsst
 Title: ghrsst
 Description: Simplified access to GHRSST (JPL's MUR daily SST) data from R.
 URL: https://github.com/BigelowLab/ghrsst
-Version: 0.1
+Version: 0.2
 Depends:
   R (>= 4.1)
 Imports:
   rlang,
   dplyr,
-  tidyr,
   sf,
   stars,
-  ncdf4,
-  xyzt
+  tidync
 Maintainer: Ben Tupper <btupper@bigelow.org>
 Author: Kyle Shehata Oliveira <kyle.oliveira@maine.edu>, Camille Ross <cross@bigelow.org>, Johnathan Evanilla <jevanilla@bigelow.org>
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
