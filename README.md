@@ -4,8 +4,8 @@ ghrsst
 > This is version “v0.2”, which switches from use of OPeNDAP to PODAAC’s
 > convenience apps. In addition to opening NetCDF connections, version
 > “v0.1” (now defunct) demonstrated how you could extract point or small
-> polygons form the NetCDF. Thsi new package is only about fetching and
-> reading data from PODAAC, not about extratiing points or polygons from
+> polygons form the NetCDF. This new package is only about fetching and
+> reading data from PODAAC, not about extracting points or polygons from
 > the data. To leaner more about extraction, see the
 > [sf](https://r-spatial.github.io/sf/) and
 > [stars](https://r-spatial.github.io/stars/) tutorials.
@@ -20,8 +20,13 @@ provides two nice command line tools (`podaac-data-downloader` and
 Currently `podaac-data-downloader` only [downloads the global
 file](https://github.com/podaac/data-subscriber/issues/134#issuecomment-1546155900),
 but there are plans afoot to add a `--subset` argument so only portions
-of the global raster are tranferred. Until then we download the entire
+of the global raster are transferred. Until then we download the entire
 globe, but then provide tools for subsetting.
+
+We made a [short
+video](https://drive.google.com/file/d/1GuX5eufkTtb3XU4gLN6_YS3h4Dc3pttW/view?usp=share_link)
+explaining this packages (while still under development), it’s a decent
+but informal walk through.
 
 # Requirements
 
@@ -132,7 +137,7 @@ coast = rnaturalearth::ne_coastline(scale = "medium", returnclass = "sf") |>
   sf::st_geometry() |>
   sf::st_crop(namibia)
 extra_plot = function(...){
-  plot(coast, col = "orange", add = TRUE)
+  plot(coast, col = "orange", lwd = 2, add = TRUE)
 }
 plot(s['analysed_sst'], hook = extra_plot)
 ```
@@ -145,10 +150,142 @@ plot(s['sst_anomaly'], hook = extra_plot)
 
 ![](README_files/figure-gfm/plot2-1.png)<!-- -->
 
+## Archiving your data
+
+There are many reasons to want to keep your subset of data. We provide
+minimalist tools to doing so, and allowing you to read back data to suit
+your needs.
+
+### Archive one file at a time
+
+We archive into a designated directory so that we can recover the files
+later. Since they are subsets they are relatively light to restore at
+some later date. We build a metadata database, in the form or a data
+frame, that helps us keep track of what we have downloaded and archived.
+
+``` r
+path = ghrsst::ghrsst_path("namibia")
+newdb = lapply(ff,
+  function(filename){
+    ghrsst::read_podaac(filename, bb = namibia, 
+                            var = c("analysed_sst", "sst_anomaly")) |>
+      ghrsst::archive_podaac(filename, path = path)
+  }) |>
+  dplyr::bind_rows() |>
+  dplyr::glimpse()
+```
+
+    ## Rows: 10
+    ## Columns: 12
+    ## $ date         <date> 2020-02-01, 2020-02-01, 2020-02-02, 2020-02-02, 2020-02-…
+    ## $ year         <dbl> 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020
+    ## $ month        <dbl> 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    ## $ time         <chr> "090000", "090000", "090000", "090000", "090000", "090000…
+    ## $ rdac         <chr> "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "…
+    ## $ level        <chr> "L4_GHRSST", "L4_GHRSST", "L4_GHRSST", "L4_GHRSST", "L4_G…
+    ## $ type         <chr> "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd…
+    ## $ product      <chr> "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "…
+    ## $ reg          <chr> "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "…
+    ## $ gds_version  <chr> "v02.0", "v02.0", "v02.0", "v02.0", "v02.0", "v02.0", "v0…
+    ## $ file_version <chr> "fv04.1", "fv04.1", "fv04.1", "fv04.1", "fv04.1", "fv04.1…
+    ## $ var          <chr> "analysed_sst", "sst_anomaly", "analysed_sst", "sst_anoma…
+
+The database is a very simple decomposition of the original file name,
+plus the added variable name. Each selected variable from each file has
+been written to the path as a TIFF file.
+
+#### Save the database
+
+We write the database to a file. Note that this makes sense for a brand
+new database, but if you are adding to an existing database you’ll want
+to checkout `append_database()`. But for this tutorial we can simply
+write the new file.
+
+``` r
+newdb = ghrsst::write_database(newdb, path)
+```
+
+#### Read the database back
+
+Now we can read the database back (pretend you paused for lunch).
+
+``` r
+path = ghrsst::ghrsst_path("namibia")
+db = read_database(path) |>
+  print()
+```
+
+    ## # A tibble: 10 × 12
+    ##    date        year month time   rdac  level     type  product reg   gds_version
+    ##    <date>     <dbl> <dbl> <chr>  <chr> <chr>     <chr> <chr>   <chr> <chr>      
+    ##  1 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  2 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  3 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  4 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  5 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  6 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  7 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  8 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ##  9 2020-02-05  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ## 10 2020-02-05  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ## # ℹ 2 more variables: file_version <chr>, var <chr>
+
+#### Reading in rasters
+
+Now filter the files for just the one(s) you want, let’s say Feb 1 and 2
+for sst_anomaly.
+
+``` r
+x = db |>
+  dplyr::filter(date <= as.Date("2020-02-02"), var == "sst_anomaly") |>
+  ghrsst::read_ghrsst(path = path)
+x
+```
+
+    ## stars object with 3 dimensions and 1 attribute
+    ## attribute(s), summary of first 1e+05 cells:
+    ##               Min. 1st Qu. Median       Mean 3rd Qu.  Max. NA's
+    ## sst_anomaly  -2.02  -0.515 -0.278 -0.2617328   0.009 0.974 2913
+    ## dimension(s):
+    ##      from   to     offset  delta refsys point x/y
+    ## x       1 1701          0   0.01 WGS 84 FALSE [x]
+    ## y       1 1301        -29   0.01 WGS 84 FALSE [y]
+    ## time    1    2 2020-02-01 1 days   Date    NA
+
+``` r
+plot(x)
+```
+
+    ## downsample set to 3
+
+![](README_files/figure-gfm/plot_ghrsst-1.png)<!-- -->
+
+You can also request multiple variables.
+
+``` r
+x = db |>
+  dplyr::filter(date <= as.Date("2020-02-02"), 
+                var %in% c("sst_anomaly", "analysed_sst")) |>
+  ghrsst::read_ghrsst(path = path)
+x
+```
+
+    ## stars object with 3 dimensions and 2 attributes
+    ## attribute(s), summary of first 1e+05 cells:
+    ##                  Min. 1st Qu.  Median        Mean 3rd Qu.    Max. NA's
+    ## analysed_sst  289.851 293.653 294.663 294.2342406 295.038 296.241 2913
+    ## sst_anomaly    -2.020  -0.515  -0.278  -0.2617328   0.009   0.974 2913
+    ## dimension(s):
+    ##      from   to     offset  delta refsys point x/y
+    ## x       1 1701          0   0.01 WGS 84 FALSE [x]
+    ## y       1 1301        -29   0.01 WGS 84 FALSE [y]
+    ## time    1    2 2020-02-01 1 days   Date    NA
+
 ## Cleaning up
 
-Without intentional cleanup, the download directory may grow to an
+Without intentional cleanup, the \*download\*\* directory may grow to an
 unreasonable size. We provide a function to purge that directory as
-needed.
+needed. Not that this does not delete files from any archive you may
+have developed.
 
     purge_podaac()

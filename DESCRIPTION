@@ -8,11 +8,12 @@ Depends:
 Imports:
   rlang,
   dplyr,
+  readr,
   sf,
   stars,
   tidync
 Maintainer: Ben Tupper <btupper@bigelow.org>
-Author: Kyle Shehata Oliveira <kyle.oliveira@maine.edu>, Camille Ross <cross@bigelow.org>, Johnathan Evanilla <jevanilla@bigelow.org>
+Author: Ben Tupper <btupper@bigelow.org>
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.3.2

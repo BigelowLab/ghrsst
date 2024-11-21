@@ -1,3 +1,22 @@
+#' Read GHRSST data as stars
+#' 
+#' @export 
+#' @param db tibble database
+#' @param path chr the data path
+#' @return a stars object
+read_ghrsst = function(db, path){
+  if(missing(path)) stop("path must be provided")
+  
+  ss = dplyr::group_by(db, .data$var) |>
+    dplyr::group_map(
+      function(tbl, key){
+        ff = compose_filename(tbl, path = path)
+        x = stars::read_stars(ff, along = list(time = tbl$date)) |>
+          rlang::set_names(tbl$var[1])
+      }, .keep = TRUE)
+    
+  do.call(c, append(ss, list(along =  NA_integer_)))
+}
 
 #' Read one or more PODAAC files as stars objects.  
 #'  
