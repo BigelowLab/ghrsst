@@ -1,3 +1,17 @@
+# A function to apply single non-fancy (or fancy) quotes
+#
+# @param x character string
+# @param fancy logical, curly quotes? (TRUE) or plain quotes (FALSE)?
+# @return single quoted value of x
+squote = function(x, fancy = FALSE){
+  on.exit({
+    options("useFancyQuotes")
+  })
+  orig_fancy = options("useFancyQuotes")
+  options(useFancyQuotes = fancy)
+  sQuote(x)
+}
+
 #' Extract a date form a PODAAC filename
 #' 
 #' @export
@@ -53,31 +67,32 @@ podaac_downloader = function(
     collection = "MUR-JPL-L4-GLOB-v4.1"
     path = ghrsst_path("tmp")
     logfile = ghrsst_path("tmp", "downloader-log")
-    start_date = Sys.Date() - 3
+    start_date = Sys.Date() - 1
     end_date = Sys.Date()
     app = 'podaac-data-downloader'
     extra = ""
   }
   
+
   if (Sys.which(app)  == "") stop("app not found:", app)
   
   ok = make_path(path)
   
   cmd = sprintf("-c %s -d %s -sd %s -ed %s --verbose %s",
                 collection[1],
-                sQuote(path[1]),
+                squote(path[1]),
                 format_date(start_date[1]),
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, sQuote(logfile))
+  args = sprintf("%s >> %s", cmd, squote(logfile))
   
   msg = sprintf("[%s] downloader: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
                 args)
   
-  cat(msg, "\n", file = logfile, append = TRUE)
+  cat(msg, "\n", file = logfile, append = file.exists(logfile))
   ok = system2(app, args)
   ok
 }
@@ -109,7 +124,7 @@ podaac_subscriber = function(
     collection = "MUR-JPL-L4-GLOB-v4.1"
     path = ghrsst_path("tmp")
     logfile = ghrsst_path("downloader-log")
-    start_date = Sys.Date() - 3
+    start_date = Sys.Date() - 1
     end_date = Sys.Date()
     app = 'podaac-data-subscriber'
     extra = ""
@@ -122,17 +137,17 @@ podaac_subscriber = function(
   
   cmd = sprintf("-c %s -d %s -sd %s -ed %s --verbose %s",
                 collection[1],
-                sQuote(path[1]),
+                squote(path[1]),
                 format_date(start_date[1]),
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, sQuote(logfile))
+  args = sprintf("%s >> %s", cmd, squote(logfile))
   msg = sprintf("[%s] subscriber: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
                 args)
-  cat(msg, "\n", file = logfile, append = TRUE)
+  cat(msg, "\n", file = logfile, append = file.exists(logfile))
   ok = system2(app, args)
   ok
 }

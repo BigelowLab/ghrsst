@@ -34,7 +34,7 @@ Install [`data-subscriber`](https://podaac.github.io/tutorials/quarto_text/DataS
 ## Installation
 
 ```
-remotes::install_github("BigelowLab/ghrsst, ref = "data-subscriber")
+remotes::install_github("BigelowLab/ghrsst", ref = "data-subscriber")
 ```
 
 # Usage
@@ -42,7 +42,7 @@ remotes::install_github("BigelowLab/ghrsst, ref = "data-subscriber")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r load_packages}
 suppressPackageStartupMessages({
   library(rnaturalearth)
   library(dplyr)
@@ -58,8 +58,8 @@ Data files are downloaded to a default data path; you can override this as neede
 
 ```
 path = "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst"
-ghrsst::make_make(path)
-ghrsst::set_root_path("/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst")
+ghrsst::make_path(path)
+ghrsst::set_root_path(path)
 ```
 
 ## Downloading
@@ -67,7 +67,7 @@ ghrsst::set_root_path("/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst")
 Downloading is mostly about selecting the start and end dates.  Accepting the defaults, files will be downloaded to `ghrsst::ghrsst_path("tmp")` directory, which is not quite the same as a temporary directory.  You'll want to clean out old files on a regular basis and we provide a tool to help with that (see below).
 
 ```{r download}
-ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-04")
+ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-02")
 print(ok)
 ```
 
