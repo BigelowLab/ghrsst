@@ -54,7 +54,7 @@ suppressPackageStartupMessages({
 
 ## Set up default paths
 
-Data files are downloaded to a default data path; you can override this as needed. It's convenient to set it once and then forget it. Below is an example, but you should adjust the path to suit your own needs. 
+Data files are downloaded to a default data path; you can override this as needed. It's convenient to set it once and then forget it. Below is an example, but you should adjust the path to suit your own needs.
 
 ```
 path = "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst"
