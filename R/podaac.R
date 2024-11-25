@@ -65,12 +65,12 @@ podaac_downloader = function(
   
   cmd = sprintf("-c %s -d %s -sd %s -ed %s --verbose %s",
                 collection[1],
-                path[1],
+                sQuote(path[1]),
                 format_date(start_date[1]),
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, logfile)
+  args = sprintf("%s >> %s", cmd, sQuote(logfile))
   
   msg = sprintf("[%s] downloader: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
@@ -122,12 +122,12 @@ podaac_subscriber = function(
   
   cmd = sprintf("-c %s -d %s -sd %s -ed %s --verbose %s",
                 collection[1],
-                path[1],
+                sQuote(path[1]),
                 format_date(start_date[1]),
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, logfile)
+  args = sprintf("%s >> %s", cmd, sQuote(logfile))
   msg = sprintf("[%s] subscriber: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 

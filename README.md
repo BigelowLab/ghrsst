@@ -72,6 +72,8 @@ Data files are downloaded to a default data path; you can override this
 as needed. It’s convenient to set it once and then forget it. Below is
 an example, but you should adjust the path to suit your own needs.
 
+    path = "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst"
+    ghrsst::make_make(path)
     ghrsst::set_root_path("/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst")
 
 ## Downloading
