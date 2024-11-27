@@ -67,7 +67,7 @@ ghrsst::set_root_path(path)
 Downloading is mostly about selecting the start and end dates.  Accepting the defaults, files will be downloaded to `ghrsst::ghrsst_path("tmp")` directory, which is not quite the same as a temporary directory.  You'll want to clean out old files on a regular basis and we provide a tool to help with that (see below).
 
 ```{r download}
-ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-02")
+ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-03")
 print(ok)
 ```
 

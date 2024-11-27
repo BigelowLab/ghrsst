@@ -85,7 +85,7 @@ want to clean out old files on a regular basis and we provide a tool to
 help with that (see below).
 
 ``` r
-ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-02")
+ok = ghrsst::podaac_downloader(start_date = as.Date("2020-02-01"), end_date = "2020-02-03")
 print(ok)
 ```
 
