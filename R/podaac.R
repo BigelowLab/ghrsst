@@ -107,7 +107,11 @@ podaac_downloader = function(
                 args)
   
   cat(msg, "\n", file = logfile, append = file.exists(logfile))
-  ok = system2(app, args)
+  if (.Platform$OS.type == "unix"){
+    ok = system2(app, args)
+  } else {
+    ok = system(paste(app, args))
+  }
   ok
 }
 
@@ -162,7 +166,13 @@ podaac_subscriber = function(
                 app, 
                 args)
   cat(msg, "\n", file = logfile, append = file.exists(logfile))
-  ok = system2(app, args)
+  
+  if (.Platform$OS.type == "unix"){
+    ok = system2(app, args)
+  } else {
+    ok = system(paste(app, args))
+  }
+  
   ok
 }
 
