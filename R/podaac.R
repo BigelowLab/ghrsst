@@ -99,20 +99,18 @@ podaac_downloader = function(
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, dquote(normalizePath(logfile, mustWork = FALSE)))
-  
+ 
   msg = sprintf("[%s] downloader: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
-                args)
-  
-  cat(msg, "\n", file = logfile, append = file.exists(logfile))
-  if (.Platform$OS.type == "unix"){
-    ok = system2(app, args)
-  } else {
-    ok = system(paste(app, args))
-  }
-  ok
+                cmd)
+    
+   cat(msg, "\n", file = logfile, append = file.exists(logfile))
+    
+   ok = system2(app, cmd,
+                stdout = logfile,
+                stderr = logfile)
+   ok
 }
 
 
@@ -160,19 +158,17 @@ podaac_subscriber = function(
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  args = sprintf("%s >> %s", cmd, dquote(normalizePath(logfile, mustWork = FALSE)))
+  
   msg = sprintf("[%s] subscriber: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
-                args)
+                cmd)
+  
   cat(msg, "\n", file = logfile, append = file.exists(logfile))
   
-  if (.Platform$OS.type == "unix"){
-    ok = system2(app, args)
-  } else {
-    ok = system(paste(app, args))
-  }
-  
+  ok = system2(app, cmd,
+               stdout = logfile,
+               stderr = logfile)
   ok
 }
 

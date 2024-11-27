@@ -4,7 +4,7 @@ output: github_document
 ---
 
 >This is version "v0.2", which switches from use of OPeNDAP to PODAAC's convenience apps.
-In addition to opening NetCDF connections, version "v0.1" (now defunct) demonstrated how you could extract point or small polygons form the NetCDF.  This new package is only about fetching and reading data from PODAAC, not about extracting points or polygons from the data.  To leaner more about extraction, see the [sf](https://r-spatial.github.io/sf/) and [stars](https://r-spatial.github.io/stars/) tutorials. 
+In addition to opening NetCDF connections, version "v0.1" (now defunct) demonstrated how you could extract point or small polygons form the NetCDF.  This new package is only about fetching and reading data from PODAAC, not about extracting points or polygons from the data.  To learn more about extraction, see the [sf](https://r-spatial.github.io/sf/) and [stars](https://r-spatial.github.io/stars/) tutorials. 
 
 Access [GHRSST](https://www.ghrsst.org/) (aka [MUR](https://www.earthdata.nasa.gov/about/competitive-programs/measures/multi-sensor-ultra-high-resolution-sst-field)) data and manage data from R. [PODAAC](https://podaac.jpl.nasa.gov/) provides two nice command line tools (`podaac-data-downloader` and `podaac-data-subscriber`).  Our focus here is on `podaac-data-downloader`.  
 
@@ -155,7 +155,7 @@ x = db |>
 x
 ```
 ```{r plot_ghrsst}
-plot(x)
+plot(x, hook = extra_plot)
 ```
 
 You can also request multiple variables.

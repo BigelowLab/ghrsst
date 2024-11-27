@@ -6,7 +6,7 @@ ghrsst
 > “v0.1” (now defunct) demonstrated how you could extract point or small
 > polygons form the NetCDF. This new package is only about fetching and
 > reading data from PODAAC, not about extracting points or polygons from
-> the data. To leaner more about extraction, see the
+> the data. To learn more about extraction, see the
 > [sf](https://r-spatial.github.io/sf/) and
 > [stars](https://r-spatial.github.io/stars/) tutorials.
 
@@ -102,7 +102,6 @@ ff = ghrsst::podaac_list() |>
     ## [2] "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst/tmp/20200202090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
     ## [3] "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst/tmp/20200203090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
     ## [4] "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst/tmp/20200204090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
-    ## [5] "/Users/ben/Library/CloudStorage/Dropbox/data/ghrsst/tmp/20200205090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc"
 
 ## Reading the downloaded data
 
@@ -132,7 +131,7 @@ s
     ##      from   to     offset  delta refsys point x/y
     ## x       1 1701          0   0.01 WGS 84 FALSE [x]
     ## y       1 1301        -29   0.01 WGS 84 FALSE [y]
-    ## time    1    5 2020-02-01 1 days   Date    NA
+    ## time    1    4 2020-02-01 1 days   Date    NA
 
 ``` r
 coast = rnaturalearth::ne_coastline(scale = "medium", returnclass = "sf") |>
@@ -177,16 +176,16 @@ newdb = lapply(ff,
   dplyr::glimpse()
 ```
 
-    ## Rows: 10
+    ## Rows: 8
     ## Columns: 12
     ## $ date         <date> 2020-02-01, 2020-02-01, 2020-02-02, 2020-02-02, 2020-02-…
-    ## $ year         <dbl> 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020
-    ## $ month        <dbl> 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    ## $ year         <dbl> 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020
+    ## $ month        <dbl> 2, 2, 2, 2, 2, 2, 2, 2
     ## $ time         <chr> "090000", "090000", "090000", "090000", "090000", "090000…
-    ## $ rdac         <chr> "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "…
+    ## $ rdac         <chr> "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL", "JPL"
     ## $ level        <chr> "L4_GHRSST", "L4_GHRSST", "L4_GHRSST", "L4_GHRSST", "L4_G…
     ## $ type         <chr> "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd", "SSTfnd…
-    ## $ product      <chr> "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "…
+    ## $ product      <chr> "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR", "MUR"
     ## $ reg          <chr> "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "GLOB", "…
     ## $ gds_version  <chr> "v02.0", "v02.0", "v02.0", "v02.0", "v02.0", "v02.0", "v0…
     ## $ file_version <chr> "fv04.1", "fv04.1", "fv04.1", "fv04.1", "fv04.1", "fv04.1…
@@ -217,19 +216,17 @@ db = read_database(path) |>
   print()
 ```
 
-    ## # A tibble: 10 × 12
-    ##    date        year month time   rdac  level     type  product reg   gds_version
-    ##    <date>     <dbl> <dbl> <chr>  <chr> <chr>     <chr> <chr>   <chr> <chr>      
-    ##  1 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  2 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  3 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  4 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  5 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  6 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  7 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  8 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ##  9 2020-02-05  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
-    ## 10 2020-02-05  2020     2 090000 JPL   L4_GHRSST SSTf… MUR     GLOB  v02.0      
+    ## # A tibble: 8 × 12
+    ##   date        year month time   rdac  level     type   product reg   gds_version
+    ##   <date>     <dbl> <dbl> <chr>  <chr> <chr>     <chr>  <chr>   <chr> <chr>      
+    ## 1 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 2 2020-02-01  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 3 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 4 2020-02-02  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 5 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 6 2020-02-03  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 7 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
+    ## 8 2020-02-04  2020     2 090000 JPL   L4_GHRSST SSTfnd MUR     GLOB  v02.0      
     ## # ℹ 2 more variables: file_version <chr>, var <chr>
 
 #### Reading in rasters
@@ -255,7 +252,7 @@ x
     ## time    1    2 2020-02-01 1 days   Date    NA
 
 ``` r
-plot(x)
+plot(x, hook = extra_plot)
 ```
 
     ## downsample set to 3
