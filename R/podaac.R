@@ -99,7 +99,7 @@ podaac_downloader = function(
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
- 
+
   msg = sprintf("[%s] downloader: %s %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
@@ -158,17 +158,18 @@ podaac_subscriber = function(
                 format_date(end_date[1], fmt = "%Y-%m-%dT23:59:59Z"),
                 extra) |>
     trimws(which = "right")
-  
-  msg = sprintf("[%s] subscriber: %s %s",
+ 
+  msg = sprintf("[%s] subscriber: %s",
                 format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
                 app, 
                 cmd)
-  
+
   cat(msg, "\n", file = logfile, append = file.exists(logfile))
   
   ok = system2(app, cmd,
                stdout = logfile,
                stderr = logfile)
+
   ok
 }
 
@@ -222,12 +223,6 @@ purge_podaac = function(path = ghrsst_path("tmp"),
     ok = logical()
   }
   
-  # if (purge_update){
-  #   ff = list.files(path, pattern = "^\\.update", all.files = TRUE)
-  #   if (length(ff) > 0)
-  #     ok <- c(ok, sapply(ff, remove_file))
-  # }
-  
-  ok
+  invisible(ok)
 }
 
